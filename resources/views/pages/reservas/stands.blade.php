@@ -16,7 +16,7 @@
 
                     <div class="row">
                         @foreach ($disponibilidad as $d)
-                        <div class="col-md-1 my-2 text-center">
+                        <div class="col-md-2 my-2 text-center">
                             <a class="btn btn-primary btn-block btn-lg" href="" role="button">{{$d->nrostand}}</a>
                         </div>
                         @endforeach
