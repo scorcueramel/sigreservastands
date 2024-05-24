@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[ReservasController::class, 'index'])->name('fechas');
 Route::get('/fecha/{id}/dia',[ReservasController::class, 'dias'])->name('dias');
 Route::get('/fecha/{fechaid}/dia/{diaid}/disponibilidad',[ReservasController::class, 'disponibilidad'])->name('disponibilidad');
+Route::get('/reservar/{fecha}/{dia}/{stand}/{id}',[ReservasController::class, 'store'])->name('reservar');
 
 Auth::routes();
 

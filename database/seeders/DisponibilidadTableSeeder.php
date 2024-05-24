@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Disponibilidad;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DisponibilidadTableSeeder extends Seeder
 {
@@ -198,6 +199,67 @@ class DisponibilidadTableSeeder extends Seeder
                 'stand_id' => $stand,
                 'estado_id' => 3,
             ]);
+        }
+
+        for ($i=1; $i <= 10; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=71; $i <= 80; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=141; $i <= 150; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=211; $i <= 220; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=281; $i <= 290; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=351; $i <= 360; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=421; $i <= 430; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=491; $i <= 500; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=561; $i <= 570; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=631; $i <= 640; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=701; $i <= 710; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
+        }
+        for ($i=771; $i <= 780; $i++) {
+            DB::select("UPDATE public.disponibilidads
+            SET tipo='A'
+            WHERE id = ?", [$i]);
         }
     }
 }

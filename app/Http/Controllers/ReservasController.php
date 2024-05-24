@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Dia;
-use App\Models\Disponibilidad;
 use App\Models\Fecha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ class ReservasController extends Controller
     public function index()
     {
         //
-        $fechas = Fecha::where("estado","A")->get();
+        $fechas = Fecha::where("estado", "A")->get();
         return view("pages.reservas.fechas", compact("fechas"));
     }
 
@@ -21,25 +21,53 @@ class ReservasController extends Controller
     {
         $fecha = $id;
         $dias = Dia::where("estado", "A")->get();
-        return view("pages.reservas.dias", compact("dias","fecha"));
+        return view("pages.reservas.dias", compact("dias", "fecha"));
     }
 
-    public function disponibilidad($fecha,$dia)
+    public function disponibilidad($fecha, $dia)
     {
-        $disponibilidad = DB::select("SELECT
-        dis.id as idDisp,dis.estado_id as estaDispo, e.descripcion as estaDispo,f.id as idFec ,f.descripcion as descFec ,f.estado as estaFec ,d.id as idDia ,d.descripcion as descDia ,d.estado as estaDia,
-        s.id as idStadn,s.stand_nro as nroStand,s.estado as estaSatand
-        FROM disponibilidads dis
-        INNER JOIN fechas f
-        ON f.id = dis.fecha_id
-        INNER JOIN dias d
-        ON d.id = dis.dia_id
-        INNER JOIN stands s
-        ON s.id = dis.stand_id
-        INNER JOIN estados e
-        ON e.id = dis.estado_id
-        where f.id = ? and d.id = ?", [$fecha,$dia]);
-        return view("pages.reservas.stands", compact("disponibilidad"));
+        $isLogin = false;
+
+        if(Auth::user() != null){
+            $isLogin = true;
+        }
+
+        $disponibilidadAdmin = DB::select("SELECT
+                                            dis.id as disp_id, dis.estado_id as dispo_estado_id, dis.stand_id as stand_id,dis.tipo, e.descripcion as dispo_descripcion,
+                                            f.id as fec_id , f.descripcion as fec_descripcion, f.estado as fec_estado, d.id as dia_id,
+                                            d.descripcion as dia_descripcion, d.estado as dia_estado,
+                                            s.id as std_id, s.stand_nro as std_numero, s.estado as std_estado
+                                            FROM disponibilidads dis
+                                            INNER JOIN fechas f
+                                            ON f.id = dis.fecha_id
+                                            INNER JOIN dias d
+                                            ON d.id = dis.dia_id
+                                            INNER JOIN stands s
+                                            ON s.id = dis.stand_id
+                                            INNER JOIN estados e
+                                            ON e.id = dis.estado_id
+                                            WHERE dis.tipo  = 'A'
+                                            AND f.id = ?
+                                            AND d.id = ?
+                                            ORDER BY disp_id ASC", [$fecha, $dia]);
+
+        $disponibilidadPublica = DB::select("SELECT
+                                            dis.id as disp_id, dis.estado_id as dispo_estado_id, dis.stand_id as stand_id,dis.tipo as tipo, e.descripcion as dispo_descripcion,
+                                            f.id as fec_id , f.descripcion as fec_descripcion, f.estado as fec_estado, d.id as dia_id,
+                                            d.descripcion as dia_descripcion, d.estado as dia_estado,
+                                            s.id as std_id, s.stand_nro as std_numero, s.estado as std_estado
+                                            FROM disponibilidads dis
+                                            INNER JOIN fechas f
+                                            ON f.id = dis.fecha_id
+                                            INNER JOIN dias d
+                                            ON d.id = dis.dia_id
+                                            INNER JOIN stands s
+                                            ON s.id = dis.stand_id
+                                            INNER JOIN estados e
+                                            ON e.id = dis.estado_id
+                                            WHERE f.id = ? and d.id = ?
+        ORDER BY disp_id", [$fecha, $dia]);
+        return view("pages.reservas.stands", compact("disponibilidadPublica","disponibilidadAdmin","isLogin"));
     }
 
     public function create()
@@ -47,9 +75,22 @@ class ReservasController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store($fecha, $dia, $stand_id, $dispo_id)
     {
         //
+        DB::select('UPDATE disponibilidads dp
+            SET estado_id = 4 WHERE fecha_id = ? AND dia_id = ? AND stand_id = ?',[$fecha,$dia,$stand_id]);
+
+        $r2 = DB::select('SELECT * FROM disponibilidads dp WHERE id = ? AND estado_id = 4',[$dispo_id]);
+
+        if($r2 != null){
+
+            $reserva2 = DB::select('UPDATE disponibilidads dp
+            SET estado_id = 4 WHERE fecha_id = ? AND dia_id = 3 AND stand_id = ?',[$fecha,$stand_id]);
+        }
+
+        dd($reserva2);
+
     }
 
     public function show(string $id)
