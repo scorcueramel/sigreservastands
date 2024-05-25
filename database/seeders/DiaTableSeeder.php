@@ -17,14 +17,17 @@ class DiaTableSeeder extends Seeder
         Dia::create([
             'descripcion'=>'SÁBADO',
             'estado'=>'A',
+            'precio'=>100.00
         ]);
         Dia::create([
             'descripcion'=>'DOMINGO',
             'estado'=>'A',
+            'precio'=>100.00
         ]);
         Dia::create([
             'descripcion'=>'SÁBADO Y DOMINGO',
             'estado'=>'A',
+            'precio'=>100.00
         ]);
     }
 }

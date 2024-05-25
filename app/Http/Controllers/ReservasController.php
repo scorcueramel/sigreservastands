@@ -28,7 +28,7 @@ class ReservasController extends Controller
     {
         $isLogin = false;
 
-        if(Auth::user() != null){
+        if (Auth::user() != null) {
             $isLogin = true;
         }
 
@@ -67,7 +67,7 @@ class ReservasController extends Controller
                                             ON e.id = dis.estado_id
                                             WHERE f.id = ? and d.id = ?
         ORDER BY disp_id", [$fecha, $dia]);
-        return view("pages.reservas.stands", compact("disponibilidadPublica","disponibilidadAdmin","isLogin"));
+        return view("pages.reservas.stands", compact("disponibilidadPublica", "disponibilidadAdmin", "isLogin"));
     }
 
     public function create()
@@ -78,19 +78,32 @@ class ReservasController extends Controller
     public function store($fecha, $dia, $stand_id, $dispo_id)
     {
         //
-        DB::select('UPDATE disponibilidads dp
-            SET estado_id = 4 WHERE fecha_id = ? AND dia_id = ? AND stand_id = ?',[$fecha,$dia,$stand_id]);
+        if ($dia == 3) {
+            DB::select('UPDATE disponibilidads dp
+            SET estado_id = 4 WHERE fecha_id = ? AND dia_id = ? AND stand_id = ?', [$fecha, $dia, $stand_id]);
 
-        $r2 = DB::select('SELECT * FROM disponibilidads dp WHERE id = ? AND estado_id = 4',[$dispo_id]);
+            $r2 = DB::select('SELECT * FROM disponibilidads dp WHERE id = ? AND estado_id = 4', [$dispo_id]);
 
-        if($r2 != null){
+            if ($r2 != null) {
+                DB::select('UPDATE disponibilidads dp
+                SET estado_id = 4 WHERE fecha_id = ? AND dia_id = 1 AND stand_id = ?', [$fecha, $stand_id]);
+                DB::select('UPDATE disponibilidads dp
+                SET estado_id = 4 WHERE fecha_id = ? AND dia_id = 2 AND stand_id = ?', [$fecha, $stand_id]);
+                return view("pages.cliente.registro-reserva", compact('fecha','dia','stand_id','dispo_id'));
+            }
+        } else {
 
-            $reserva2 = DB::select('UPDATE disponibilidads dp
-            SET estado_id = 4 WHERE fecha_id = ? AND dia_id = 3 AND stand_id = ?',[$fecha,$stand_id]);
+            DB::select('UPDATE disponibilidads dp
+            SET estado_id = 4 WHERE fecha_id = ? AND dia_id = ? AND stand_id = ?', [$fecha, $dia, $stand_id]);
+
+            $r2 = DB::select('SELECT * FROM disponibilidads dp WHERE id = ? AND estado_id = 4', [$dispo_id]);
+
+            if ($r2 != null) {
+                DB::select('UPDATE disponibilidads dp
+                SET estado_id = 4 WHERE fecha_id = ? AND dia_id = 3 AND stand_id = ?', [$fecha, $stand_id]);
+                return view("pages.cliente.registro-reserva", compact('fecha','dia','stand_id','dispo_id'));
+            }
         }
-
-        dd($reserva2);
-
     }
 
     public function show(string $id)
