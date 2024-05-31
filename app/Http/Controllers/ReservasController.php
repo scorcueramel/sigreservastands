@@ -142,7 +142,7 @@ class ReservasController extends Controller
             'correo' => $request->correo,
         ]);
 
-        // Al pago le falta agregar el monto pagado
+        $validacompro = DB::select('select * from pagos where numero_operacion = ?',[$request->numero_operacion]);
 
         $pago = new Pago();
         $pago->numero_operacion = $request->numero_operacion;
@@ -153,13 +153,15 @@ class ReservasController extends Controller
             $imagen->storeAs('/documents/', $imgRename, $this->disk);
         }
         $pago->cliente_id = $cliente->id;
+        $pago->monto = $request->monto;
+        $pago->duplicado = count($validacompro) ? 'SI' : 'NO';
         $pago->save();
 
         $reserva = Reserva::create([
             'stand_id' => $request->stand_id,
             'fecha_id' => $request->fecha,
             'dia_id' => $request->dia,
-            'estado' => 'R',
+            'estado' => 'RESERVADO',
             'pago_id' => $pago->id,
         ]);
 

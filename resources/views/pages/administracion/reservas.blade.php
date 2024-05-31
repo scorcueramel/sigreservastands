@@ -16,7 +16,7 @@
                     <div class="row text-center border rounded mx-1 py-3">
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">FECHAS</label>
+                                <label class="form-label">FECHAS</label>
                                 <select class="form-select @error('fecha') is-invalid @enderror" name="fecha" id="fecha">
                                     <option selected disabled>Selecciona una fecha</option>
                                     @foreach ($fechas as $f)
@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">DIAS</label>
+                                <label class="form-label">DIAS</label>
                                 <select class="form-select @error('dia') is-invalid @enderror" name="dia" id="dia">
                                     <option selected disabled>Selecciona un día</option>
                                     @foreach ($dias as $d)
@@ -48,11 +48,11 @@
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">ESTADOS</label>
+                                <label class="form-label">ESTADOS</label>
                                 <select class="form-select @error('estado') is-invalid @enderror" name="estado" id="estado">
                                     <option selected disabled>Selecciona un estado</option>
-                                    <option value="R">RESERVADO</option>
-                                    <option value="A">ASIGNADO</option>
+                                    <option value="RESERVADO">RESERVADO</option>
+                                    <option value="ASIGNADO">ASIGNADO</option>
                                 </select>
                                 @error('estado')
                                 <span class="invalid-feedback" role="alert">
@@ -71,20 +71,18 @@
                 <table class="table mt-2 nowrap" id="tabla">
                     <thead>
                         <th>#</th>
+                        <th>DETALLES</th>
                         <th>ESTADO</th>
                         <th>STAND</th>
                         <th>FECHA</th>
                         <th>DIA</th>
                         <th># OP</th>
-                        <th>COMPROBANTE</th>
-                        <th>NOMBRES</th>
-                        <th>PATERNO</th>
-                        <th>MATERNO</th>
+                        <th>NOMBRES Y APELLIDOS</th>
+                        <!-- <th>PATERNO</th>
+                        <th>MATERNO</th> -->
                         <th>DOCUMENTO</th>
                         <th>MOVIL</th>
-                        <th>CORREO</th>
-                        <th>TIPO DOCUMENTO</th>
-                        <th>OBSERVACIÓN</th>
+                        <!-- <th>CORREO</th> -->
                     </thead>
                     <tbody class="cuerpotabla"></tbody>
                 </table>
@@ -109,13 +107,20 @@
                 $('#tabla').DataTable({
                     responsive: true,
                     stateSave: true,
+                    processing: true,
+                    serverSide: true,
+                    autoWidth: false,
                     "bDestroy": true,
                     ajax: {
                         url: `/reservaciones/${fecha}/${dia}/${estado}`,
                         type: 'GET'
                     },
-                    columns: [{
+                    columns: [
+                        {
                             data: 'r_id'
+                        },
+                        {
+                            data:'detalles'
                         },
                         {
                             data: 'r_estado'
@@ -133,38 +138,44 @@
                             data: 'p_num_op'
                         },
                         {
-                            data: 'p_comprobante'
-                        },
-                        {
-                            data: 'c_nombres'
-                        },
-                        {
-                            data: 'c_appaterno'
-                        },
-                        {
-                            data: 'c_apmaterno'
+                            data: 'nombres_apellidos'
                         },
                         {
                             data: 'c_documento'
                         },
                         {
                             data: 'c_movil'
-                        },
-                        {
-                            data: 'c_correo'
-                        },
-                        {
-                            data: 'td_descripcion'
-                        },
-                        {
-                            data: 'td_abreviatura'
-                        },
-                    ]
+                        }
+                    ],
+                    "language": {
+                        "lengthMenu": "Mostrar " +
+                            `<select class="custom-select custom-select-sm form-control form-control-sm shadow-none">
+                            <option value='5' selected>5</option>
+                            <option value='10'>10</option>
+                            <option value='15'>15</option>
+                            <option value='20'>20</option>
+                            <option value='25'>25</option>
+                            <option value='-1'>Todos</option>
+                        </select>` +
+                            " registros por página",
+                        "zeroRecords": "Sin Resultados Actualmente",
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "Sin Resultados",
+                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                        "search": "Buscar: ",
+                        "paginate": {
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    },
                 });
             }
         });
+    });
 
+    $('.detalle').on('click',function(){
+        alert('Alerta')
+    });
 
-    })
 </script>
 @endpush

@@ -27,7 +27,11 @@ Route::post('/generar/reserva',[ReservasController::class,'client_register'])->n
 
 Auth::routes();
 
-Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/actualiza/disponibilidad/',[DisponibilidadController::class, 'actualizarDisponibilidad'])->name('actualiza.disponibilidad');
 Route::get('/reservas/',[ReservaController::class, 'index'])->name('reserva.index');
 Route::get('/reservaciones/{fecha}/{dia}/{estado}',[ReservaController::class, 'getReservas'])->name('reservaciones');
+Route::get('/detalle-reserva/{id}',[ReservaController::class, 'detalleReservas'])->name('detalle.reserva');
+Route::get('/aprobar/{id}/{fecha}/{dia}/{stand_id}/{nombres}/{correo}',[ReservaController::class, 'aprobar'])->name('detalle.reserva');
+
+

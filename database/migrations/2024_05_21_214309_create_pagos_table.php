@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('numero_operacion');
             $table->string('comprobante');
+            $table->float('monto',8,2);
+            $table->string('duplicado',20);
             $table->foreignId('cliente_id')->constrained('clientes');
             $table->timestamps();
         });

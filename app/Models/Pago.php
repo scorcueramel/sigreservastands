@@ -12,6 +12,8 @@ class Pago extends Model
     protected $fillable = [
         'numero_operacion',
         'comprobante',
+        'monto',
+        'duplicado',
         'cliente_id',
     ];
 }
