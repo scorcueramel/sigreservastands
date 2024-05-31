@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('apepaterno',50);
             $table->string('apematerno',50);
             $table->foreignId('documento_id')->constrained('tipo_documentos');
-            $table->string('documento',12);
-            $table->string('movil',20);
-            $table->string('correo',120)->unique();
+            $table->string('documento');
+            $table->string('movil');
+            $table->string('correo');
             $table->softDeletes();
             $table->timestamps();
         });

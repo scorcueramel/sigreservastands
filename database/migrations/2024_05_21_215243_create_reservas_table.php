@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('stand_id')->constrained('stands');
             $table->foreignId('fecha_id')->constrained('fechas');
-            $table->foreignId('cliente_id')->constrained('clientes');
             $table->foreignId('dia_id')->constrained('dias');
-            $table->foreignId('estado_id')->constrained('estados');
+            $table->string('estado',1);
             $table->foreignId('pago_id')->constrained('pagos');
             $table->timestamps();
         });

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('stand_id')->constrained('stands');
             $table->foreignId('estado_id')->constrained('estados');
             $table->string('tipo',1)->nullable(true);
+            $table->boolean('disponible')->default(true);
             $table->timestamps();
         });
     }

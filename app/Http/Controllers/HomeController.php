@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dia;
+use App\Models\Fecha;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $fechas = Fecha::where('estado', 'A')->get();
+        $dias = Dia::where('estado', 'A')->get();
+
+        return view('pages.administracion.home', compact('fechas','dias'));
     }
 }

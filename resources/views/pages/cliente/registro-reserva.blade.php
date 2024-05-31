@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.reserva')
 @push('css')
 <style>
     .adminRegister {
@@ -37,91 +37,96 @@
                     </div>
 
                     <div class="row mb-2">
-                        <form action="" method="post">
-                            <input type="hidden" value="{{$fecha}}">
-                            <input type="hidden" value="{{$dia}}">
-                            <input type="hidden" value="{{$stand_id}}">
-                            <input type="hidden" value="{{$dispo_id}}">
+                        <form action="{{route('generar.registro')}}" method="POST" enctype="multipart/form-data" id="frmregistro">
+                            @csrf
+                            <input type="hidden" value="{{$fecha}}" name="fecha" id="fecha">
+                            <input type="hidden" value="{{$dia}}" name="dia" id="dia">
+                            <input type="hidden" value="{{$stand_id}}" name="stand_id" id="stand_id">
+                            <input type="hidden" value="{{$dispo_id}}" name="dispo_id" id="dispo_id">
                             @if ($fecha == 1)
                             <div class="mb-3">
                                 <label for="dia" class="form-label">Fecha seleccionada</label>
-                                <input type="text" class="form-control" id="dia" value="FECHA 1" disabled>
+                                <input type="text" class="form-control" value="FECHA 1" disabled>
                             </div>
                             @elseif ($fecha == 2)
                             <div class="mb-3">
                                 <label for="dia" class="form-label">Fecha seleccionada</label>
-                                <input type="text" class="form-control" id="dia" value="FECHA 2" disabled>
+                                <input type="text" class="form-control" value="FECHA 2" disabled>
                             </div>
                             @elseif ($fecha == 3)
                             <div class="mb-3">
                                 <label for="dia" class="form-label">Fecha seleccionada</label>
-                                <input type="text" class="form-control" id="dia" value="FECHA 3" disabled>
+                                <input type="text" class="form-control" value="FECHA 3" disabled>
                             </div>
                             @elseif ($fecha == 4)
                             <div class="mb-3">
                                 <label for="dia" class="form-label">Fecha seleccionada</label>
-                                <input type="text" class="form-control" id="dia" value="FECHA 4" disabled>
+                                <input type="text" class="form-control" value="FECHA 4" disabled>
                             </div>
                             @endif
                             @if ($dia == 1)
                             <div class="mb-3">
                                 <label for="dia" class="form-label">Día seleccionado</label>
-                                <input type="text" class="form-control" id="dia" value="SÁBADO" disabled>
+                                <input type="text" class="form-control" value="SÁBADO" disabled>
                             </div>
                             @elseif ($dia == 2)
                             <div class="mb-3">
                                 <label for="dia" class="form-label">Día seleccionado</label>
-                                <input type="text" class="form-control" id="dia" value="DOMINGO" disabled>
+                                <input type="text" class="form-control" value="DOMINGO" disabled>
                             </div>
                             @elseif ($dia == 3)
                             <div class="mb-3">
                                 <label for="dia" class="form-label">Día seleccionado</label>
-                                <input type="text" class="form-control" id="dia" value="SÁBADO Y DOMINGO" disabled>
+                                <input type="text" class="form-control" value="SÁBADO Y DOMINGO" disabled>
                             </div>
                             @endif
                             <div class="mb-3">
                                 <label for="nombres" class="form-label">Nombres</label>
-                                <input type="text" max="50" class="form-control" id="nombres" placeholder="Ingresa tus nombres" required>
+                                <input type="text" class="form-control" maxlength="50" name="nombres" value="{{old('nombres')}}" id="nombres" placeholder="Ingresa tus nombres" required>
                             </div>
                             <div class="mb-3">
                                 <label for="apepaterno" class="form-label">Apellido Paterno</label>
-                                <input type="text" max="50" class="form-control" id="apepaterno" placeholder="Ingresa tu Apellido Paterno" required>
+                                <input type="text" class="form-control" maxlength="50" name="apepaterno" value="{{old('apepaterno')}}" id="apepaterno" placeholder="Ingresa tu Apellido Paterno" required>
                             </div>
                             <div class="mb-3">
                                 <label for="apematerno" class="form-label">Apellido Materno</label>
-                                <input type="text" max="50" class="form-control" id="apematerno" placeholder="Ingresa tu Apellido Materno" required>
+                                <input type="text" class="form-control" maxlength="50" name="apematerno" value="{{old('apematerno')}}" id="apematerno" placeholder="Ingresa tu Apellido Materno" required>
                             </div>
                             <div class="mb-3">
                                 <label for="tipodocumento" class="form-label">Tipo de Documento</label>
-                                <select class="form-select" aria-label="tipodocumento">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="form-select" name="documento_id" value="{{old('documento_id')}}" aria-label="tipodocumento">
+                                    <option value="" disabled selected>Selecciona tu tipo de documento</option>
+                                    @foreach ($tipo_documentos as $tp)
+                                    <option value="{{$tp->id}}">{{$tp->descripcion}} ({{ $tp->abreviatura }})</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label for="documento" class="form-label">Numero de Documento</label>
+                                <input type="text" class="form-control" maxlength="12" name="documento" value="{{old('documento')}}" id="documento" placeholder="Nro. de Documento de Identida" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="movil" class="form-label">Numero de Contacto</label>
-                                <input type="text" max="15" class="form-control" id="movil" placeholder="Ingresa tu Numero de Contacto" required>
+                                <input type="text" class="form-control" maxlength="15" name="movil" value="{{old('movil')}}" id="movil" placeholder="Ingresa tu Numero de Contacto" maxlength="12" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" placeholder="Ingresa tu Numero Correo Electrónico">
+                                <label for="correo" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" name="correo" value="{{old('correo')}}" id="correo" placeholder="Ingresa tu Correo Electrónico" required>
                             </div>
                             <div class="mb-3">
-                                <label for="movil" class="form-label">Número de Operación</label>
-                                <input type="text" max="25" class="form-control" id="movil" placeholder="Ingresa tu Número de Operación" required>
+                                <label for="numero_operacion" class="form-label">Número de Operación</label>
+                                <input type="text" class="form-control" maxlength="10" name="numero_operacion" id="numero_operacion" placeholder="Ingresa tu Número de Operación" required>
                             </div>
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Foto del comprobante</label>
-                                <input class="form-control" type="file" id="formFile" aria-describedby="comprobante">
+                                <label for="comprobante" class="form-label">Foto del comprobante</label>
+                                <input class="form-control" type="file" id="comprobante" name="comprobante" {{ old('comprobante') }} aria-describedby="comprobante" required>
                                 <div id="comprobante" class="form-text">
                                     Sube la foto de tu comprobante de págo
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <button type="submit" class="btn btn-primary">Realizar Reserva</button>
-                                <button type="button" class="btn btn-danger">Volver</button>
+                                <a href="{{ url('/volver/'.$fecha.'/'.$dia.'/'.$stand_id.'/'.$dispo_id) }}" class="btn btn-danger">Volver</a>
                             </div>
                         </form>
                     </div>
@@ -131,3 +136,39 @@
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+    window.onbeforeunload = function(e) {
+        let fecha = $('#fecha').val();
+        let dia = $('#dia').val();
+        let stand_id = $('#stand_id').val();
+        let dispo_id = $('#dispo_id').val();
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        $.ajax({
+            type: "GET",
+            url: `/recargar/${fecha}/${dia}/${stand}/${id}/pagina`,
+            success: function(response) {
+                console.log(response);
+            }
+        });
+        console.log(fecha,dia,stand_id,dispo_id);
+    };
+
+
+    $('#frmregistro').submit((e) => {
+        Swal.fire({
+            allowOutsideClick: false,
+            icon: 'info',
+            iconColor: '#005ea5',
+            text: 'Un momento porfavor estamos procesamos su registro...',
+            timerProgressBar: true,
+            showConfirmButton: false,
+        });
+        Swal.showLoading();
+    });
+</script>
+@endpush

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DisponibilidadController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\ReservasController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +20,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[ReservasController::class, 'index'])->name('fechas');
 Route::get('/fecha/{id}/dia',[ReservasController::class, 'dias'])->name('dias');
 Route::get('/fecha/{fechaid}/dia/{diaid}/disponibilidad',[ReservasController::class, 'disponibilidad'])->name('disponibilidad');
-Route::get('/reservar/{fecha}/{dia}/{stand}/{id}',[ReservasController::class, 'store'])->name('reservar');
+Route::get('/reservar/{fecha}/{dia}/{stand}/{id}',[ReservasController::class, 'clienteReserva'])->name('reservar');
+Route::get('/volver/{fecha}/{dia}/{stand}/{id}', [ReservasController::class, 'goBack'])->name('volver');
+Route::get('/recargar/{fecha}/{dia}/{stand}/{id}/pagina', [ReservasController::class, 'refreshPage'])->name('recargar');
+Route::post('/generar/reserva',[ReservasController::class,'client_register'])->name('generar.registro');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+Route::post('/actualiza/disponibilidad/',[DisponibilidadController::class, 'actualizarDisponibilidad'])->name('actualiza.disponibilidad');
+Route::get('/reservas/',[ReservaController::class, 'index'])->name('reserva.index');
+Route::get('/reservaciones/{fecha}/{dia}/{estado}',[ReservaController::class, 'getReservas'])->name('reservaciones');

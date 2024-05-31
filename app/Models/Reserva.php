@@ -13,7 +13,7 @@ class Reserva extends Model
         'fecha_id',
         'cliente_id',
         'dia_id',
-        'estado_id',
+        'estado',
         'pago_id',
     ];
 }
