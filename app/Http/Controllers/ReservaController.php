@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\Aprobado;
+use App\Mail\Rechazar;
 use App\Models\Dia;
 
 use App\Models\Fecha;
@@ -103,5 +104,18 @@ class ReservaController extends Controller
         Mail::to($correo)->send(new Aprobado($nombres));
 
         return back()->with("success","El registro fue aprobado con exito!");
+    }
+
+    public function rechazar($id, $fecha, $dia, $stand_id, $nombres, $correo){
+        DB::select('UPDATE disponibilidads
+                                    SET estado_id = 3
+                                    WHERE fecha_id=? AND dia_id=? AND stand_id=?',[$fecha,$dia, $stand_id]);
+        DB::select("UPDATE reservas
+                    SET estado = 'ASIGNADO'
+                    WHERE id=?",[$id]);
+
+        Mail::to($correo)->send(new Rechazar($nombres));
+
+        return back()->with("success","El registro fue rechazado");
     }
 }

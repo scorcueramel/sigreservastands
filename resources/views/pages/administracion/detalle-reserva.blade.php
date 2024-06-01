@@ -101,7 +101,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md text-center">
-                        <img src="{{asset('/storage/documents/'.$detalles->p_comprobante)}}" alt="">
+                        <img class="img-fluid" src="{{asset('/storage/documents/'.$detalles->p_comprobante)}}" alt="">
                     </div>
                 </div>
             </div>
@@ -183,6 +183,24 @@
                     showConfirmButton: false,
                 });
                 Swal.showLoading();
+                $.ajax({
+                    type: "GET",
+                    url: `/rechazar/${id}/${fecha}/${dia}/${stand_id}/${nombres}/${correo}`,
+                    success: function(response) {
+                        Swal.close();
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: 'Reserva rechazada',
+                            showConfirmButton: false,
+                            timer: 3500
+                        });
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1200);
+
+                    }
+                });
             }
         });
     });

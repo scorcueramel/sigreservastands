@@ -32,6 +32,7 @@ Route::post('/actualiza/disponibilidad/',[DisponibilidadController::class, 'actu
 Route::get('/reservas/',[ReservaController::class, 'index'])->name('reserva.index');
 Route::get('/reservaciones/{fecha}/{dia}/{estado}',[ReservaController::class, 'getReservas'])->name('reservaciones');
 Route::get('/detalle-reserva/{id}',[ReservaController::class, 'detalleReservas'])->name('detalle.reserva');
-Route::get('/aprobar/{id}/{fecha}/{dia}/{stand_id}/{nombres}/{correo}',[ReservaController::class, 'aprobar'])->name('detalle.reserva');
+Route::get('/aprobar/{id}/{fecha}/{dia}/{stand_id}/{nombres}/{correo}',[ReservaController::class, 'aprobar'])->name('aprobar.reserva');
+Route::get('/rechazar/{id}/{fecha}/{dia}/{stand_id}/{nombres}/{correo}',[ReservaController::class, 'rechazar'])->name('rechazar.reserva');
 
 
