@@ -35,6 +35,12 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
+                            <div class="text-primary">Número de Operación Duplicado</div>
+                            <div class="fw-bold ms-4">> {{ $detalles->p_duplicado }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
                             <div class="text-primary">Monto Abonado</div>
                             <div class="fw-bold ms-4">> S/. {{ $detalles->p_monto }}.00</div>
                         </div>
