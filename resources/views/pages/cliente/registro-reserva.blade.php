@@ -43,10 +43,10 @@
                             <input type="hidden" value="{{$dia}}" name="dia" id="dia">
                             <input type="hidden" value="{{$stand_id}}" name="stand_id" id="stand_id">
                             <input type="hidden" value="{{$dispo_id}}" name="dispo_id" id="dispo_id">
-                            <input type="hidden" value="100.00" name="monto" id="monto">
+                            <input type="hidden" value="{{$precio}}" name="monto" id="monto">
                             <div class="mb-3">
                                 <label for="monto" class="form-label">Monto a pagar</label>
-                                <input type="text" class="form-control" value="100.00" disabled>
+                                <input type="text" class="form-control" value="S/. {{$precio}}.00" disabled>
                             </div>
                             @if ($fecha == 1)
                             <div class="mb-3">

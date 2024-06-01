@@ -2,15 +2,15 @@
 
 @section('content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Reservas Realizadas</h1>
+    <h1 class="h2">Consultas y Exportaciones</h1>
 </div>
 
 <div class="container">
     <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
         <div class="card-body">
             <section class="border p-3 mb-2">
-                <div class="alert alert-info fade show" role="alert">
-                    <strong>Buscar reservas!</strong> Selecciona las fechas y los días para encontrar las reservas realizadas
+                <div class="alert alert-success fade show" role="alert">
+                    <strong>Exportar Información!</strong> Desde esta sección puedes exportar a excel los registros en sus diversos estados
                 </div>
                 <form>
                     <div class="row text-center border rounded mx-1 py-3">

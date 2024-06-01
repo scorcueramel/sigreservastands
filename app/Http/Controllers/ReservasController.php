@@ -62,32 +62,12 @@ class ReservasController extends Controller
         $disponibilidad = $disponible[0]->disponible;
 
         if ($disponibilidad) {
-            return view("pages.cliente.registro-reserva", compact('fecha', 'dia', 'stand_id', 'dispo_id', 'tipo_documentos'));
             if ($dia == 3) {
-                DB::select('UPDATE disponibilidads dp
-                SET disponible = false WHERE fecha_id = ? AND dia_id = ? AND stand_id = ? AND disponible = true', [$fecha, $dia, $stand_id]);
-
-                $r2 = DB::select('SELECT * FROM disponibilidads dp WHERE id = ? AND estado_id = 4', [$dispo_id]);
-
-                if ($r2 != null) {
-                    DB::select('UPDATE disponibilidads dp
-                SET disponible = false WHERE fecha_id = ? AND dia_id = 1 AND stand_id = ? AND disponible = true', [$fecha, $stand_id]);
-                    DB::select('UPDATE disponibilidads dp
-                SET disponible = false WHERE fecha_id = ? AND dia_id = 2 AND stand_id = ? AND disponible = true', [$fecha, $stand_id]);
-                }
-                return view("pages.cliente.registro-reserva", compact('fecha', 'dia', 'stand_id', 'dispo_id', 'tipo_documentos'));
+                $precio = 200;
+                return view("pages.cliente.registro-reserva", compact('fecha', 'dia', 'stand_id', 'dispo_id', 'tipo_documentos', 'precio'));
             } else {
-                DB::select('UPDATE disponibilidads dp
-                SET disponible = false WHERE fecha_id = ? AND dia_id = ? AND stand_id = ? AND disponible = true', [$fecha, $dia, $stand_id]);
-
-                $r2 = DB::select('SELECT * FROM disponibilidads dp WHERE id = ? AND estado_id = 4', [$dispo_id]);
-
-                if ($r2 != null) {
-                    DB::select('UPDATE disponibilidads dp
-                SET disponible = false WHERE fecha_id = ? AND dia_id = 3 AND stand_id = ? AND disponible = true', [$fecha, $stand_id]);
-
-                    return view("pages.cliente.registro-reserva", compact('fecha', 'dia', 'stand_id', 'dispo_id', 'tipo_documentos'));
-                }
+                $precio = 100;
+                return view("pages.cliente.registro-reserva", compact('fecha', 'dia', 'stand_id', 'dispo_id', 'tipo_documentos', 'precio'));
             }
         } else {
             $message = "Este stand no se encuenta disponible en estos momentos, te sugerimos seleccionar otro de tu preferencia.";
@@ -142,7 +122,7 @@ class ReservasController extends Controller
             'correo' => $request->correo,
         ]);
 
-        $validacompro = DB::select('select * from pagos where numero_operacion = ?',[$request->numero_operacion]);
+        $validacompro = DB::select('select * from pagos where numero_operacion = ?', [$request->numero_operacion]);
 
         $pago = new Pago();
         $pago->numero_operacion = $request->numero_operacion;

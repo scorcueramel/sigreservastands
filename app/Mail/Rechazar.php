@@ -21,6 +21,6 @@ class Rechazar extends Mailable
     }
 
     public function build(){
-        return $this->view('mail.aprobado')->subject('Estado actual de tu reserva');
+        return $this->view('mail.rechazar')->subject('Estado actual de tu reserva');
     }
 }

@@ -131,9 +131,9 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 let id = "{{ $detalles->r_id }}";
-                let fecha = "{{ $detalles->s_id }}";
-                let dia = "{{ $detalles->f_id }}";
-                let stand_id = "{{ $detalles->d_id }}";
+                let fecha = "{{ $detalles->f_id }}";
+                let dia = "{{ $detalles->d_id }}";
+                let stand_id = "{{ $detalles->s_id }}";
                 let nombres = "{{ $detalles->c_nombres }}";
                 let correo = "{{ $detalles->c_correo }}";
                 Swal.fire({
@@ -159,8 +159,8 @@
                         });
                         setTimeout(() => {
                             window.location.reload();
-                        }, 1200);
-
+                        }, 1000);
+                        console.log(response);
                     }
                 });
 
@@ -180,6 +180,12 @@
             cancelButtonText: "Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
+                let id = "{{ $detalles->r_id }}";
+                let fecha = "{{ $detalles->f_id }}";
+                let dia = "{{ $detalles->d_id }}";
+                let stand_id = "{{ $detalles->s_id }}";
+                let nombres = "{{ $detalles->c_nombres }}";
+                let correo = "{{ $detalles->c_correo }}";
                 Swal.fire({
                     allowOutsideClick: false,
                     icon: 'info',
@@ -203,7 +209,7 @@
                         });
                         setTimeout(() => {
                             window.location.reload();
-                        }, 1200);
+                        }, 1000);
 
                     }
                 });

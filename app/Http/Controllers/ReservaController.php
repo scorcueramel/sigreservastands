@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Mail\Aprobado;
 use App\Mail\Rechazar;
 use App\Models\Dia;
-
+use App\Models\Disponibilidad;
 use App\Models\Fecha;
 use App\Models\Reserva;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
+
+use function Laravel\Prompts\table;
 
 class ReservaController extends Controller
 {
@@ -58,21 +60,22 @@ class ReservaController extends Controller
         return DataTables::collection($reservas)
             ->addColumn('detalles', function ($row) {
                 return '<td>
-                            <a href="/detalle-reserva/'.$row['r_id'].'" class="btn btn-danger btn-sm detalle">
+                            <a href="/detalle-reserva/' . $row['r_id'] . '" class="btn btn-danger btn-sm detalle">
                                 <i class="fa-solid fa-circle-info me-1"></i>
                             </a>
                         </td>';
             })
             ->addColumn('nombres_apellidos', function ($row) {
                 return '<td>'
-                         .''.$row['c_nombres'].' '.$row['c_appaterno'].' '.$row['c_apmaterno'].''.
-                        '</td>';
+                    . '' . $row['c_nombres'] . ' ' . $row['c_appaterno'] . ' ' . $row['c_apmaterno'] . '' .
+                    '</td>';
             })
-            ->rawColumns(['detalles','nombres_apellidos'])
+            ->rawColumns(['detalles', 'nombres_apellidos'])
             ->make(true);
     }
 
-    public function detalleReservas($id){
+    public function detalleReservas($id)
+    {
         $reservaDetalle = DB::select('select
         r.id as r_id, r.estado as r_estado, s.id as s_id ,s.stand_nro as s_nro_stand,f.id as f_id, f.descripcion as f_descripcion,
         d.id as d_id,d.descripcion as d_descripcion, p.duplicado as p_duplicado, p.numero_operacion as p_nro_op, p.comprobante as p_comprobante,
@@ -93,29 +96,74 @@ class ReservaController extends Controller
         return view('pages.administracion.detalle-reserva', compact('detalles'));
     }
 
-    public function aprobar($id, $fecha, $dia, $stand_id, $nombres, $correo){
-        DB::select('UPDATE disponibilidads
-                                    SET estado_id = 5
-                                    WHERE fecha_id=? AND dia_id=? AND stand_id=?',[$fecha,$dia, $stand_id]);
-        DB::select("UPDATE reservas
-                    SET estado = 'ASIGNADO'
-                    WHERE id=?",[$id]);
+    public function aprobar($id, $fecha, $dia, $stand_id, $nombres, $correo)
+    {
+        if ($dia == 3) {
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 5
+                        WHERE fecha_id=? AND dia_id=? AND stand_id=?', [$fecha, $dia, $stand_id]);
+
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 5
+                        WHERE fecha_id=? AND dia_id=1 AND stand_id=?', [$fecha, $stand_id]);
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 5
+                        WHERE fecha_id=? AND dia_id=2 AND stand_id=?', [$fecha, $stand_id]);
+            DB::select("UPDATE reservas
+                        SET estado = 'ASIGNADO'
+                        WHERE id=?", [$id]);
+        } else {
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 5
+                        WHERE fecha_id=? AND dia_id=? AND stand_id=?', [$fecha, $dia, $stand_id]);
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 5
+                        WHERE fecha_id=? AND dia_id=3 AND stand_id=?', [$fecha, $stand_id]);
+            DB::select("UPDATE reservas
+                        SET estado = 'ASIGNADO'
+                        WHERE id=?", [$id]);
+        }
 
         Mail::to($correo)->send(new Aprobado($nombres));
 
-        return back()->with("success","El registro fue aprobado con exito!");
+        return back()->with("success", "El registro fue aprobado con exito!");
     }
 
-    public function rechazar($id, $fecha, $dia, $stand_id, $nombres, $correo){
-        DB::select('UPDATE disponibilidads
-                                    SET estado_id = 3
-                                    WHERE fecha_id=? AND dia_id=? AND stand_id=?',[$fecha,$dia, $stand_id]);
-        DB::select("UPDATE reservas
-                    SET estado = 'ASIGNADO'
-                    WHERE id=?",[$id]);
+    public function rechazar($id, $fecha, $dia, $stand_id, $nombres, $correo)
+    {
+        if ($dia == 3) {
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 3
+                        WHERE fecha_id=? AND dia_id=? AND stand_id=?', [$fecha, $dia, $stand_id]);
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 3
+                        WHERE fecha_id=? AND dia_id=1 AND stand_id=?', [$fecha, $stand_id]);
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 3
+                        WHERE fecha_id=? AND dia_id=2 AND stand_id=?', [$fecha, $stand_id]);
+            DB::select("UPDATE reservas
+                        SET estado = 'RECHAZADO'
+                        WHERE id=?", [$id]);
+        } else {
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 3
+                        WHERE fecha_id=? AND dia_id=? AND stand_id=?', [$fecha, $dia, $stand_id]);
+            DB::select('UPDATE disponibilidads
+                        SET estado_id = 3
+                        WHERE fecha_id=? AND dia_id=3 AND stand_id=?', [$fecha, $stand_id]);
+            DB::select("UPDATE reservas
+                    SET estado = 'RECHAZADO'
+                    WHERE id=?", [$id]);
+        }
 
         Mail::to($correo)->send(new Rechazar($nombres));
 
-        return back()->with("success","El registro fue rechazado");
+        return back()->with("success", "El registro fue rechazado");
+    }
+
+    public function consultar(){
+        $fechas = Fecha::where('estado', 'A')->get();
+        $dias = Dia::where('estado', 'A')->get();
+        return view('pages.administracion.consultas', compact('fechas', 'dias'));
     }
 }

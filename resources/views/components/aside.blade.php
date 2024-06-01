@@ -21,9 +21,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{{route('consultar.data')}}">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 Consultas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+                                <i class="fa-solid fa-users"></i>
+                                Usuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+                                <i class="fa-solid fa-gear"></i>
+                                Roles y Permisos
                             </a>
                         </li>
                     </ul>

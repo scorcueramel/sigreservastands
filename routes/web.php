@@ -34,5 +34,7 @@ Route::get('/reservaciones/{fecha}/{dia}/{estado}',[ReservaController::class, 'g
 Route::get('/detalle-reserva/{id}',[ReservaController::class, 'detalleReservas'])->name('detalle.reserva');
 Route::get('/aprobar/{id}/{fecha}/{dia}/{stand_id}/{nombres}/{correo}',[ReservaController::class, 'aprobar'])->name('aprobar.reserva');
 Route::get('/rechazar/{id}/{fecha}/{dia}/{stand_id}/{nombres}/{correo}',[ReservaController::class, 'rechazar'])->name('rechazar.reserva');
+Route::get('/realizar/consultas',[ReservaController::class, 'consultar'])->name('consultar.data');
+// Route::get('/consultas/{id}/{fecha}/{dia}/{stand_id}',[ReservaController::class, 'consultar'])->name('consultar.data');
 
 
