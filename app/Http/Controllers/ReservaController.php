@@ -74,7 +74,7 @@ class ReservaController extends Controller
     public function detalleReservas($id){
         $reservaDetalle = DB::select('select
         r.id as r_id, r.estado as r_estado, s.id as s_id ,s.stand_nro as s_nro_stand,f.id as f_id, f.descripcion as f_descripcion,
-        d.id as d_id,d.descripcion as d_descripcion, p.numero_operacion as p_nro_op, p.comprobante as p_comprobante,
+        d.id as d_id,d.descripcion as d_descripcion, p.duplicado as p_duplicado, p.numero_operacion as p_nro_op, p.comprobante as p_comprobante,
         p.monto as p_monto, c.nombres as c_nombres, c.apepaterno as c_paterno, c.apematerno as c_materno,
         c.documento as c_documento, c.documento as c_documento, c.movil as c_movil, c.correo as c_correo,
         td.descripcion as td_descripcion
